@@ -43,42 +43,6 @@ def decrypt_ecb(encryptedParams):
 
 
 try:
-    # message = b'userid=456;userdata=admin/true;session-id=31337'
-    # print(f"Plaintext before byte-flip: {message.decode('ascii')}")
-    # slash_pos = message.index(b'/')
-    #
-    # ciphertext = encrypt_ecb(message)
-    #
-    # print("\nBefore admin/true - Ciphertext (hex):")
-    # ciphertext_hex = ''.join([hex(x)[2:].zfill(2) for x in ciphertext])
-    # print(ciphertext_hex)
-    #
-    # block_num = (slash_pos // 16)
-    # pos_in_prev_block = slash_pos % 16
-    # prev_block_start = (block_num - 1) * 16
-    #
-    # modified_ciphertext = bytearray(ciphertext)
-    # modified_ciphertext[prev_block_start + pos_in_prev_block] ^= (ord('/') ^ ord('='))
-    #
-    # print("\nAfter admin/true - Ciphertext (hex):")
-    # modified_hex = ''.join([hex(x)[2:].zfill(2) for x in modified_ciphertext])
-    # print(modified_hex)
-    #
-    # print(f"\nChanged byte position: {prev_block_start + pos_in_prev_block}")
-    # print(f"Original byte: {hex(ciphertext[prev_block_start + pos_in_prev_block])[2:].zfill(2)}")
-    # print(f"Modified byte: {hex(modified_ciphertext[prev_block_start + pos_in_prev_block])[2:].zfill(2)}")
-    #
-    # # The bit flipping modification:
-    # # cipher[:16] - Keep first block unchanged
-    # # cipher[16:18] - These hex chars represent the byte we want to modify
-    # # cipher[18:] - Keep the rest unchanged
-    # # The modification works because:
-    # # 1. In CBC, each plaintext block is XORed with previous ciphertext block
-    # # 2. By modifying the ciphertext block before where 'r' appears,
-    # # we affect the XOR operation during decryption of the next block
-    # # 3. This causes 'r' to become 's' after decryption
-    #
-    # decrypt_ecb(modified_ciphertext)
     fileName = input("Enter file name: ")
     with open(fileName, "r+b") as f:
         header = f.read(54)
