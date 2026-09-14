@@ -1,7 +1,5 @@
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
-from binascii import unhexlify
-import re
 import binascii
 
 def pad(message):
