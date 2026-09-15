@@ -29,11 +29,11 @@ def encrypt_cbc(data):
         enc = enc + block_enc
     return bytes(enc)
 
-def decrypt_cbc(encryptedParams):
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    paddedParams = cipher.decrypt(bytes(encryptedParams))
-    #print(f"\nPlaintext after byte-flip: userid=456;userdata=admin/true;session-id=31337")
-    print("Decrypted data:", paddedParams)
+# def decrypt_cbc(encryptedParams):
+#     cipher = AES.new(key, AES.MODE_CBC, iv)
+#     paddedParams = cipher.decrypt(bytes(encryptedParams))
+#     #print(f"\nPlaintext after byte-flip: userid=456;userdata=admin/true;session-id=31337")
+#     print("Decrypted data:", paddedParams)
 
 def submit(pstring):
 
