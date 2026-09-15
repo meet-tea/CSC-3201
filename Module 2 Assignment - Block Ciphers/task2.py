@@ -15,11 +15,19 @@ iv = get_random_bytes(16)
 
 
 def encrypt_cbc(data):
-    #padded = pad(data.encode(), 16, style="pkcs7")
-    cipher = AES.new(key, AES.MODE_CBC, iv)
+    cipher = AES.new(key, AES.MODE_ECB)
     padded = pad(data)
-    enc = cipher.encrypt(padded)
-    return enc
+    block_size = 16
+    enc = bytearray()
+    block_enc = iv
+    for i in range(0, len(padded), block_size):
+        block = padded[i:i+block_size]
+        block_xored = bytearray(block_size)
+        for byte_i in range(block_size):
+            block_xored[byte_i] = block[byte_i] ^ block_enc[byte_i]
+        block_enc = cipher.encrypt(block_xored)
+        enc = enc + block_enc
+    return bytes(enc)
 
 def decrypt_cbc(encryptedParams):
     cipher = AES.new(key, AES.MODE_CBC, iv)
