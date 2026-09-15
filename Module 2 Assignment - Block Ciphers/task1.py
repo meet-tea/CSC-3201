@@ -7,37 +7,45 @@ def pad(message):
     padding = bytes([paddinglen] * paddinglen)
     return message + padding
 
-
-
 key = get_random_bytes(16)
 iv = get_random_bytes(16)
 
-
-
 def encrypt_cbc(data):
-    #padded = pad(data.encode(), 16, style="pkcs7")
-    cipher = AES.new(key, AES.MODE_CBC, iv)
+    cipher = AES.new(key, AES.MODE_ECB)
     padded = pad(data)
-    enc = cipher.encrypt(padded)
-    return enc
-
-def decrypt_cbc(encryptedParams):
-    cipher = AES.new(key, AES.MODE_CBC, iv)
-    paddedParams = cipher.decrypt(bytes(encryptedParams))
-    #print(f"\nPlaintext after byte-flip: userid=456;userdata=admin/true;session-id=31337")
-    print("Decrypted data:", paddedParams)
+    block_size = 16
+    enc = bytearray()
+    block_enc = iv
+    for i in range(0, len(padded), block_size):
+        block = padded[i:i+block_size]
+        block_xored = bytearray(block_size)
+        for byte_i in range(block_size):
+            block_xored[byte_i] = block[byte_i] ^ block_enc[byte_i]
+        block_enc = cipher.encrypt(block_xored)
+        enc = enc + block_enc
+    return bytes(enc)
 
 def encrypt_ecb(data):
     cipher = AES.new(key, AES.MODE_ECB)
     padded = pad(data)
-    enc = cipher.encrypt(padded)
-    return enc
+    block_size = 16
+    enc = bytearray()
+    for i in range(0, len(padded), block_size):
+        block = padded[i:i+block_size]
+        enc = enc + cipher.encrypt(block)
+    return bytes(enc)
 
-def decrypt_ecb(encryptedParams):
-    cipher = AES.new(key, AES.MODE_ECB)
-    padded = cipher.decrypt(bytes(encryptedParams))
-    print("Decrypted data:", padded)
-
+# for testing only
+# def decrypt_cbc(encryptedParams):
+#     cipher = AES.new(key, AES.MODE_CBC, iv)
+#     paddedParams = cipher.decrypt(bytes(encryptedParams))
+#     #print(f"\nPlaintext after byte-flip: userid=456;userdata=admin/true;session-id=31337")
+#     print("Decrypted data:", paddedParams)
+#
+# def decrypt_ecb(encryptedParams):
+#     cipher = AES.new(key, AES.MODE_ECB)
+#     padded = cipher.decrypt(bytes(encryptedParams))
+#     print("Decrypted data:", padded)
 
 
 try:
