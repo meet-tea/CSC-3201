@@ -86,8 +86,8 @@ alicesecret = pow(bobpublic, aliceprivate, q)
 bobsecret = pow(alicepublic, bobprivate, q)
 print("Alice's computed shared secret: " + str(alicesecret))
 print("Bob's computed shared secret: " + str(bobsecret))
-alicekey = SHA256.new(alicesecret.to_bytes((alicesecret.bit_length() + 7) // 8, 'big')).digest()[:16]
-bobkey = SHA256.new(bobsecret.to_bytes((bobsecret.bit_length() + 7) // 8, 'big')).digest()[:16]
+alicekey = SHA256.new((str(alicesecret).encode())).digest()[:16]
+bobkey = SHA256.new((str(bobsecret).encode())).digest()[:16]
 print("Alice's derived key: " + str(alicekey.hex()))
 print("Bob's derived key: " + str(bobkey.hex()))
 if alicekey != bobkey:
